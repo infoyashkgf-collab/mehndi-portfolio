@@ -4,7 +4,7 @@ A stunning, scroll-driven portfolio website for a professional mehndi artist, in
 
 ![Preview](https://via.placeholder.com/1200x630/c9a96e/0a0c0a?text=Zara+Noor+Mehndi+Artist)
 
-**Live Demo:** https://mehndiwala.github.io/mehndi-portfolio/
+**Live Demo:** https://infoyashkgf-collab.github.io/mehndi-portfolio/
 
 ---
 
