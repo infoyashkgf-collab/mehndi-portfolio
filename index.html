@@ -233,18 +233,29 @@
     .sequence-image {
       width: 100%;
       aspect-ratio: 1;
-      background: radial-gradient(ellipse at center, var(--henna) 0%, var(--bg-dark) 70%);
+      background: 
+        repeating-conic-gradient(from 0deg, rgba(201,169,110,0.1) 0deg 10deg, transparent 10deg 20deg),
+        radial-gradient(circle at center, var(--gold) 0%, transparent 30%),
+        radial-gradient(ellipse at center, var(--henna) 0%, var(--bg-dark) 80%);
       border-radius: 8px;
       overflow: hidden;
       position: relative;
       border: 1px solid rgba(201,169,110,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .sequence-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.1s;
+    .sequence-image::after {
+      content: '✨';
+      font-size: 6rem;
+      opacity: 0.4;
+      animation: sparkle 2s ease-in-out infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.1); }
     }
 
     .sequence-callouts {
@@ -308,18 +319,41 @@
     .morph-image {
       position: absolute;
       inset: 0;
-      background-size: cover;
-      background-position: center;
+      background: 
+        repeating-conic-gradient(from 45deg, rgba(201,169,110,0.05) 0deg 15deg, transparent 15deg 30deg),
+        radial-gradient(ellipse at center, var(--henna) 0%, var(--bg-dark) 80%);
       transition: opacity 0.1s;
     }
 
     .morph-image.before {
-      background-image: url('images/sequences/before.jpg');
+      background: 
+        radial-gradient(ellipse at center, var(--bg-surface) 0%, var(--bg-dark) 70%);
     }
 
     .morph-image.after {
-      background-image: url('images/sequences/after.jpg');
+      background: 
+        repeating-conic-gradient(from 0deg, rgba(201,169,110,0.1) 0deg 10deg, transparent 10deg 20deg),
+        radial-gradient(circle at 30% 30%, var(--gold) 0%, transparent 25%),
+        radial-gradient(ellipse at center, var(--henna) 0%, var(--bg-dark) 80%);
       opacity: 0;
+    }
+
+    .morph-image::after {
+      content: attr(data-label);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      opacity: 0.2;
+    }
+
+    .morph-image.before::after {
+      content: '🤚';
+    }
+
+    .morph-image.after::after {
+      content: '🎨';
     }
 
     .morph-labels {
@@ -378,14 +412,30 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
-      background: linear-gradient(135deg, var(--henna-deep), var(--henna));
+      background: radial-gradient(circle at 30% 30%, var(--gold) 0%, transparent 20%),
+                  radial-gradient(circle at 70% 70%, var(--gold-dark) 0%, transparent 25%),
+                  linear-gradient(135deg, var(--henna-deep), var(--henna));
     }
 
-    .gallery-card .card-art img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s;
+    .gallery-card .card-art::before {
+      content: '';
+      position: absolute;
+      width: 60%;
+      height: 60%;
+      border: 2px solid rgba(201,169,110,0.3);
+      border-radius: 50%;
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .gallery-card .card-art::after {
+      content: '🎨';
+      font-size: 4rem;
+      opacity: 0.3;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.3; }
+      50% { transform: scale(1.1); opacity: 0.5; }
     }
 
     .gallery-card:hover .card-art img {
@@ -607,7 +657,6 @@
       <h2>Timeless art for<br>modern hands</h2>
       <div class="sequence-container">
         <div class="sequence-image" id="sequence-display">
-          <img src="images/gallery/mehndi-01.jpg" alt="Mehndi Design" id="sequence-img">
         </div>
         <div class="sequence-callouts">
           <div class="callout">
@@ -953,16 +1002,16 @@
       cursorGlow.style.top = e.clientY + 'px';
     });
 
-    // ── Sequence Image Scroll Effect ──
-    const sequenceImages = [
-      'images/gallery/mehndi-01.jpg',
-      'images/gallery/mehndi-02.jpg',
-      'images/gallery/mehndi-03.jpg',
-      'images/gallery/mehndi-04.jpg',
-      'images/gallery/mehndi-05.jpg',
-      'images/gallery/mehndi-06.jpg'
+    // ── Sequence Scroll Effect ──
+    const sequenceDisplay = document.getElementById('sequence-display');
+    const patterns = [
+      'repeating-conic-gradient(from 0deg, rgba(201,169,110,0.1) 0deg 10deg, transparent 10deg 20deg)',
+      'radial-gradient(circle at 30% 30%, var(--gold) 0%, transparent 25%)',
+      'radial-gradient(circle at 70% 70%, var(--gold-dark) 0%, transparent 25%)',
+      'repeating-linear-gradient(45deg, rgba(201,169,110,0.1) 0deg, transparent 10deg, rgba(201,169,110,0.1) 20deg)',
+      'radial-gradient(ellipse at center, var(--gold) 0%, transparent 40%)',
+      'repeating-conic-gradient(from 45deg, rgba(201,169,110,0.15) 0deg 15deg, transparent 15deg 30deg)'
     ];
-    let currentSeqIndex = 0;
 
     ScrollTrigger.create({
       trigger: '#sequence',
@@ -971,11 +1020,8 @@
       scrub: true,
       onUpdate: (self) => {
         const progress = self.progress;
-        const newIndex = Math.min(Math.floor(progress * sequenceImages.length), sequenceImages.length - 1);
-        if (newIndex !== currentSeqIndex) {
-          currentSeqIndex = newIndex;
-          document.getElementById('sequence-img').src = sequenceImages[currentSeqIndex];
-        }
+        const index = Math.min(Math.floor(progress * patterns.length), patterns.length - 1);
+        sequenceDisplay.style.background = patterns[index] + ', radial-gradient(ellipse at center, var(--henna) 0%, var(--bg-dark) 80%)';
       }
     });
 
