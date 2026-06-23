@@ -438,8 +438,9 @@
       50% { transform: scale(1.1); opacity: 0.5; }
     }
 
-    .gallery-card:hover .card-art img {
-      transform: scale(1.1);
+    .gallery-card:hover .card-art::before {
+      transform: scale(1.2);
+      opacity: 0.6;
     }
 
     .gallery-card .card-label {
@@ -696,39 +697,27 @@
       <h2>Our Work</h2>
       <div class="gallery-grid">
         <div class="gallery-card">
-          <div class="card-art">
-            <img src="images/gallery/mehndi-01.jpg" alt="Bridal Mehndi">
-          </div>
+          <div class="card-art"></div>
           <div class="card-label">Bridal Mehndi</div>
         </div>
         <div class="gallery-card">
-          <div class="card-art">
-            <img src="images/gallery/mehndi-02.jpg" alt="Arabic Design">
-          </div>
+          <div class="card-art"></div>
           <div class="card-label">Arabic Design</div>
         </div>
         <div class="gallery-card">
-          <div class="card-art">
-            <img src="images/gallery/mehndi-03.jpg" alt="Traditional Patterns">
-          </div>
+          <div class="card-art"></div>
           <div class="card-label">Traditional Art</div>
         </div>
         <div class="gallery-card">
-          <div class="card-art">
-            <img src="images/gallery/mehndi-04.jpg" alt="Contemporary">
-          </div>
+          <div class="card-art"></div>
           <div class="card-label">Contemporary</div>
         </div>
         <div class="gallery-card">
-          <div class="card-art">
-            <img src="images/gallery/mehndi-05.jpg" alt="Party Mehndi">
-          </div>
+          <div class="card-art"></div>
           <div class="card-label">Party Mehndi</div>
         </div>
         <div class="gallery-card">
-          <div class="card-art">
-            <img src="images/gallery/mehndi-06.jpg" alt="Festival Special">
-          </div>
+          <div class="card-art"></div>
           <div class="card-label">Festival Special</div>
         </div>
       </div>
@@ -1005,12 +994,12 @@
     // ── Sequence Scroll Effect ──
     const sequenceDisplay = document.getElementById('sequence-display');
     const patterns = [
-      'repeating-conic-gradient(from 0deg, rgba(201,169,110,0.1) 0deg 10deg, transparent 10deg 20deg)',
-      'radial-gradient(circle at 30% 30%, var(--gold) 0%, transparent 25%)',
-      'radial-gradient(circle at 70% 70%, var(--gold-dark) 0%, transparent 25%)',
-      'repeating-linear-gradient(45deg, rgba(201,169,110,0.1) 0deg, transparent 10deg, rgba(201,169,110,0.1) 20deg)',
-      'radial-gradient(ellipse at center, var(--gold) 0%, transparent 40%)',
-      'repeating-conic-gradient(from 45deg, rgba(201,169,110,0.15) 0deg 15deg, transparent 15deg 30deg)'
+      'repeating-conic-gradient(from 0deg, rgba(201,169,110,0.1) 0deg 10deg, transparent 10deg 20deg), radial-gradient(ellipse at center, #8b4513 0%, #0a0c0a 80%)',
+      'radial-gradient(circle at 30% 30%, #c9a96e 0%, transparent 25%), radial-gradient(ellipse at center, #8b4513 0%, #0a0c0a 80%)',
+      'radial-gradient(circle at 70% 70%, #8b6914 0%, transparent 25%), radial-gradient(ellipse at center, #8b4513 0%, #0a0c0a 80%)',
+      'repeating-linear-gradient(45deg, rgba(201,169,110,0.1) 0px, transparent 10px, rgba(201,169,110,0.1) 20px), radial-gradient(ellipse at center, #8b4513 0%, #0a0c0a 80%)',
+      'radial-gradient(ellipse at center, #c9a96e 0%, transparent 40%), radial-gradient(ellipse at center, #8b4513 0%, #0a0c0a 80%)',
+      'repeating-conic-gradient(from 45deg, rgba(201,169,110,0.15) 0deg 15deg, transparent 15deg 30deg), radial-gradient(ellipse at center, #8b4513 0%, #0a0c0a 80%)'
     ];
 
     ScrollTrigger.create({
@@ -1019,9 +1008,8 @@
       end: 'bottom center',
       scrub: true,
       onUpdate: (self) => {
-        const progress = self.progress;
-        const index = Math.min(Math.floor(progress * patterns.length), patterns.length - 1);
-        sequenceDisplay.style.background = patterns[index] + ', radial-gradient(ellipse at center, var(--henna) 0%, var(--bg-dark) 80%)';
+        const index = Math.min(Math.floor(self.progress * patterns.length), patterns.length - 1);
+        sequenceDisplay.style.background = patterns[index];
       }
     });
 
